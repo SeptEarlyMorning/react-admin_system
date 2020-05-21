@@ -6,7 +6,7 @@ interface IProps {
 
 function Admin(props: IProps) {
   return (
-    <div>Admin</div>
+    <div className='h'>Admin</div>
   );
 }
 
