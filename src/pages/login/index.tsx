@@ -2,15 +2,23 @@ import * as React from 'react';
 import logo from '../../assets/images/logo.png';
 import { Form, Input, Checkbox, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Store } from 'antd/lib/form/interface';
 
 const login = require('./login.module.less');
 
 interface IProps {
   // name: string;
 }
+interface Values {
+  username: string;
+  password: string;
+}
 
 function Login(props: IProps) {
-  console.log(login);
+  const [from] = Form.useForm();
+  const onFinish = (values: Values | Store) => {
+    console.log('Received values of form: ', values);
+  };
 
   return (
     <div className={login.login}>
@@ -24,16 +32,30 @@ function Login(props: IProps) {
           name="normal_login"
           className={login['login-form']}
           initialValues={{ remember: true }}
-        // onFinish={onFinish}
+          onFinish={onFinish}
         >
           <Form.Item
             name="username"
             className={login['login-input']}
-            rules={[{ required: true, message: '请输入用户名!' }]}
+            required
+            rules={[{
+              required: true,
+              message: '请输入用户名!'
+            }, {
+              min: 6,
+              message: '用户名最小6位数'
+            }, {
+              max: 12,
+              message: '用户名最大12位数'
+            }, {
+              pattern: /^[a-zA-Z0-9_]+/,
+              message: '用户名必须是英文、数字或下划线组成!'
+            },]}
           >
             <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="用户名" />
+              prefix={<UserOutlined style={{ color: 'rgba(0, 0, 0, 0.25)' }} />}
+              placeholder="用户名"
+            />
           </Form.Item>
           <Form.Item
             name="password"
@@ -41,7 +63,7 @@ function Login(props: IProps) {
             rules={[{ required: true, message: '请输入密码!' }]}
           >
             <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
+              prefix={<LockOutlined style={{ color: 'rgba(0, 0, 0, 0.25)' }} />}
               type="password"
               placeholder="密码"
             />
