@@ -49,7 +49,7 @@ function Login(props: IProps) {
               message: '用户名最大12位数'
             }, {
               pattern: /^[a-zA-Z0-9_]+/,
-              message: '用户名必须是英文、数字或下划线组成!'
+              message: '用户名必须是英文、数字或下划线组成'
             },]}
           >
             <Input
