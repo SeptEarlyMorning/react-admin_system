@@ -40,7 +40,8 @@ function Login(props: IProps) {
             required
             rules={[{
               required: true,
-              message: '请输入用户名!'
+              message: '请输入用户名!',
+              whitespace: true
             }, {
               min: 6,
               message: '用户名最小6位数'
