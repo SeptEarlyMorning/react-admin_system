@@ -18,6 +18,7 @@ function Login(props: IProps) {
   const [from] = Form.useForm();
   const onFinish = (values: Values | Store) => {
     console.log('Received values of form: ', values);
+    
   };
 
   return (
@@ -38,7 +39,7 @@ function Login(props: IProps) {
             name="username"
             className={login['login-input']}
             required
-            rules={[{
+            rules={[{ // 声明式验证
               required: true,
               message: '请输入用户名!',
               whitespace: true
@@ -61,9 +62,22 @@ function Login(props: IProps) {
           <Form.Item
             name="password"
             className={login['login-input']}
-            rules={[{ required: true, message: '请输入密码!' }]}
+            rules={[{
+              required: true,
+              message: '请输入密码!',
+              whitespace: true
+            }, {
+              min: 6,
+              message: '密码最小6位'
+            }, {
+              max: 12,
+              message: '密码最大12位'
+            }, {
+              pattern: /^[a-zA-Z0-9_]+/,
+              message: '密码必须由英文、数字或下划线组成'
+            },]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined style={{ color: 'rgba(0, 0, 0, 0.25)' }} />}
               type="password"
               placeholder="密码"
