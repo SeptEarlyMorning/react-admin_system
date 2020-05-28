@@ -1,24 +1,50 @@
 import * as React from 'react';
 import logo from '../../assets/images/logo.png';
-import { Form, Input, Checkbox, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Store } from 'antd/lib/form/interface';
+import { reqLogin } from '../../api';
+import { AxiosResponse } from 'axios';
+import { useHistory } from 'react-router-dom';
+import memoryUtils from '../../utils/memoryUtils';
 
 const login = require('./login.module.less');
 
-interface IProps {
-  // name: string;
-}
 interface Values {
   username: string;
   password: string;
 }
 
-function Login(props: IProps) {
-  const [from] = Form.useForm();
-  const onFinish = (values: Values | Store) => {
+interface Result {
+  status: number;
+  msg?: string;
+  data?: Object;
+}
+
+function Login() {
+  const history = useHistory();
+  const onFinish = async (values: Values | Store) => {
+    const { username, password } = values;
     console.log('Received values of form: ', values);
-    
+    // try {
+    const result: Result = await reqLogin(username, password);
+    // const result = response.data; // { status: 0, data: user} { status: 1, msg: 'xxx' }
+    if (result.status === 0) { // 登录成功
+      message.success('登录成功');
+
+      const user = result.data;
+      user && (memoryUtils.user = user);
+      history.replace('/');
+      // 跳转到管理界面
+      // this.props.history.replace('/');
+    } else { // 登录失败
+      // 提示错误信息
+      message.error(result.msg);
+    }
+    // console.log('请求成功', response.data);
+    // } catch (error) {
+    //   console.log('错误', error);
+    // }
   };
 
   return (
@@ -44,8 +70,8 @@ function Login(props: IProps) {
               message: '请输入用户名!',
               whitespace: true
             }, {
-              min: 6,
-              message: '用户名最小6位数'
+              min: 4,
+              message: '用户名最小4位数'
             }, {
               max: 12,
               message: '用户名最大12位数'
@@ -67,8 +93,8 @@ function Login(props: IProps) {
               message: '请输入密码!',
               whitespace: true
             }, {
-              min: 6,
-              message: '密码最小6位'
+              min: 4,
+              message: '密码最小4位'
             }, {
               max: 12,
               message: '密码最大12位'
