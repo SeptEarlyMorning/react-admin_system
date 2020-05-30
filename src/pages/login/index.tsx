@@ -4,9 +4,9 @@ import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Store } from 'antd/lib/form/interface';
 import { reqLogin } from '../../api';
-import { AxiosResponse } from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import memoryUtils from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
 
 const login = require('./login.module.less');
 
@@ -23,6 +23,11 @@ interface Result {
 
 function Login() {
   const history = useHistory();
+  // 如果用户已经登录，直接跳转到管理界面
+  const user: any = memoryUtils.user;
+  if (user && user._id) {
+    return <Redirect to='/' />
+  }
   const onFinish = async (values: Values | Store) => {
     const { username, password } = values;
     console.log('Received values of form: ', values);
@@ -32,8 +37,9 @@ function Login() {
     if (result.status === 0) { // 登录成功
       message.success('登录成功');
 
-      const user = result.data;
-      user && (memoryUtils.user = user);
+      const user = result.data || {};
+      memoryUtils.user = user;
+      storageUtils.saveUser(user);
       history.replace('/');
       // 跳转到管理界面
       // this.props.history.replace('/');
