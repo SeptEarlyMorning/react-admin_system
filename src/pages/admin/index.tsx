@@ -1,9 +1,10 @@
 import * as React from 'react';
 import memoryUtils from '../../utils/memoryUtils';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { Layout } from 'antd';
 import LeftNav from '../../components/leftNav';
 import Header from '../../components/header';
+import { router } from '../../router';
 
 interface IProps {
 
@@ -20,12 +21,26 @@ function Admin(props: IProps) {
   return (
     <div>
       <Layout style={{ height: '100vh' }}>
-        <Sider>
+        <Sider style={{ backgroundColor: '#fff', borderRight: '1px solid #ccc' }}>
           <LeftNav />
         </Sider>
         <Layout>
           <Header />
-          <Content>Content</Content>
+          <Content>
+            <Switch>
+              {
+                router.map(item => {
+                  return (<Route
+                    key={item.id}
+                    path={item.path}
+                    exact={item.exact}
+                    render={props => item.render(props)}
+                  />)
+                })
+              }
+              <Redirect to='/home' />
+            </Switch>
+          </Content>
           <Footer style={{ textAlign: 'center', color: '#ccc' }}>推荐使用谷歌浏览器</Footer>
         </Layout>
       </Layout>
