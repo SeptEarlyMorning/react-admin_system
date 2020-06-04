@@ -2,14 +2,13 @@ import React from 'react';
 import logo from '../../assets/images/logo.png';
 import { Menu } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
-import {
-  AppstoreOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  ContainerOutlined,
-  MailOutlined,
-} from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
+import { createFromIconfontCN } from '@ant-design/icons';
+import { IMenu, menu } from '../../config/menuConfig';
+
+const IconFont = createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_1856679_wqu75l1dco.js',
+});
 
 const leftNav = require('./leftNav.module.less');
 
@@ -20,14 +19,30 @@ interface IProps {
 function LeftNav(props: IProps) {
   const location = useLocation();
   const { pathname } = location;
-  let subKey: string;
-  if (pathname === '/category' || pathname === '/product') {
-    subKey = 'sub1';
-  } else if (pathname === '/chart/bar' || pathname === '/chart/line' || pathname === '/chart/pie') {
-    subKey = 'sub2';
-  } else {
-    subKey = ''
-  }
+  let subKey = '';
+
+  const getMenuNodes = (menuList: Array<IMenu>) => {
+    return menuList.map(item => {
+      if (item.children && item.children.length > 0) {
+        item.children.find(value => value.key === pathname) && (subKey = item.key);
+        return (
+          <SubMenu key={item.key} icon={<IconFont type={item.icon} />} title={item.title}>
+            {getMenuNodes(item.children)}
+          </SubMenu>
+        );
+      } else {
+        return (
+          <Menu.Item key={item.key} icon={<IconFont type={item.icon} />}>
+            <Link to={item.key}>
+              {item.title}
+            </Link>
+          </Menu.Item>
+        );
+      }
+    });
+  };
+
+  const menuNodes = getMenuNodes(menu);
 
   return (
     <div className={leftNav['left-nav']}>
@@ -39,57 +54,10 @@ function LeftNav(props: IProps) {
         defaultOpenKeys={[subKey]}
         mode="inline"
         theme='light'
-      // inlineCollapsed={this.state.collapsed}
       >
-        <Menu.Item key='/home' icon={<PieChartOutlined />}>
-          <Link to='/home'>
-            首页
-          </Link>
-        </Menu.Item>
-        <SubMenu key="sub1" icon={<MailOutlined />} title="商品">
-          <Menu.Item key='/category'>
-            <Link to='/category'>
-              品类管理
-            </Link>
-          </Menu.Item>
-          <Menu.Item key='/product'>
-            <Link to='/product'>
-              商品管理
-            </Link>
-          </Menu.Item>
-        </SubMenu>
-        <Menu.Item key='/user' icon={<DesktopOutlined />}>
-          <Link to='/user'>
-            用户管理
-          </Link>
-        </Menu.Item>
-        <Menu.Item key='/role' icon={<ContainerOutlined />}>
-          <Link to='/role'>
-            角色管理
-          </Link>
-        </Menu.Item>
-        <SubMenu key="sub2" icon={<AppstoreOutlined />} title="图形图表">
-          <Menu.Item key='/chart/bar'>
-            <Link to='/chart/bar'>
-              柱状图
-            </Link>
-          </Menu.Item>
-          <Menu.Item key='/chart/line'>
-            <Link to='/chart/line'>
-              折线图
-            </Link>
-          </Menu.Item>
-          <Menu.Item key='/chart/pie'>
-            <Link to='/chart/pie'>
-              饼图
-            </Link>
-          </Menu.Item>
-        </SubMenu>
-        <Menu.Item key='/order'>
-          <Link to='/order'>
-            订单管理
-          </Link>
-        </Menu.Item>
+        {
+          menuNodes
+        }
       </Menu>
     </div>
   );
