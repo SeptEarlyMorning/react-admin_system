@@ -7,7 +7,13 @@ interface IProps {
 /* 主页 */
 function Home(props: IProps) {
   return (
-    <>home</>
+    <div style={{
+      fontSize: '36px',
+      textAlign: 'center',
+      marginTop: '150px'
+    }}>
+      欢迎使用后台管理系统
+    </div>
   );
 }
 

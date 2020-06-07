@@ -8,5 +8,49 @@
     line-height  : 30px;
     padding-right: 20px;
     border-bottom: 1px solid #1890ff;
+
+    &>span {
+      color       : #777;
+      margin-right: 8px;
+    }
+  }
+
+  .header-bottom {
+    display    : flex;
+    align-items: center;
+    height     : 50px;
+
+    .header-bottom-left {
+      position   : relative;
+      width      : 25%;
+      line-height: 50px;
+      text-align : center;
+      font-size  : 24px;
+
+      h1 {
+        margin-bottom: 0;
+      }
+
+      &::after {
+        content   : '';
+        position  : absolute;
+        left      : 50%;
+        bottom    : -40px;
+        transform : translateX(-50%);
+        border    : 20px solid transparent;
+        border-top: 20px solid #fff;
+      }
+    }
+
+    .header-bottom-right {
+      width        : 75%;
+      padding-right: 20px;
+      text-align   : right;
+
+      span {
+        margin-left: 8px;
+        color      : #aaa;
+      }
+    }
   }
 }

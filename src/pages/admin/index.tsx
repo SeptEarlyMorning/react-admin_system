@@ -1,23 +1,26 @@
 import * as React from 'react';
 import memoryUtils from '../../utils/memoryUtils';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, RouteComponentProps } from 'react-router-dom';
 import { Layout } from 'antd';
 import LeftNav from '../../components/leftNav';
 import Header from '../../components/header';
 import { router } from '../../router';
 
-interface IProps {
+interface IProps extends RouteComponentProps<any> {
 
 };
+
 const { Footer, Sider, Content } = Layout;
 
 function Admin(props: IProps) {
   const user: any = memoryUtils.user;
+  const { pathname } = props.location;
 
   // 如果内存没有存储 user ==> 当前没有登录
   if (!user || !user._id) {
     return <Redirect to='/login' />
   }
+
   return (
     <div>
       <Layout style={{ height: '100vh' }}>
@@ -25,8 +28,17 @@ function Admin(props: IProps) {
           <LeftNav />
         </Sider>
         <Layout>
-          <Header />
-          <Content>
+          <Header
+            userName={user.username}
+            pathName={pathname}
+          />
+          <Content
+            style={{
+              margin: '22px',
+              marginBottom: 0,
+              backgroundColor: '#fff'
+            }}
+          >
             <Switch>
               {
                 router.map(item => {
