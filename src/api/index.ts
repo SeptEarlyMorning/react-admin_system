@@ -17,6 +17,15 @@ export const reqLogin = (username: string, password: string): Promise<AxiosRespo
 // 添加用户
 export const reqAddUser = (user: {}) => ajax('/manage/user/add', user, 'POST');
 
+// 获取分类列表
+export const reqCategoryList = (parentId: string = '0') => ajax('/manage/category/list', { parentId }, 'GET');
+
+// 添加分类
+export const reqCategoryAdd = (parentId: string, categoryName: string) => ajax('/manage/category/add', { parentId, categoryName }, 'POST');
+
+// 修改分类名称
+export const reqCategoryRename = (categoryId: string, categoryName: string) => ajax('/manage/category/update', { categoryId, categoryName }, 'POST');
+
 // 查询位置信息
 export const reqLocation = () => {
   return new Promise((resolve, reject) => {

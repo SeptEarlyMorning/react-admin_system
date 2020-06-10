@@ -23,8 +23,11 @@ function Admin(props: IProps) {
 
   return (
     <div>
-      <Layout style={{ height: '100vh' }}>
-        <Sider style={{ backgroundColor: '#fff', borderRight: '1px solid #ccc' }}>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider style={{
+          backgroundColor: '#fff',
+          borderRight: '1px solid #ccc'
+        }}>
           <LeftNav />
         </Sider>
         <Layout>
@@ -34,9 +37,12 @@ function Admin(props: IProps) {
           />
           <Content
             style={{
+              overflow: 'initial',
               margin: '22px',
               marginBottom: 0,
-              backgroundColor: '#fff'
+              backgroundColor: '#fff',
+              padding: '20px',
+              minHeight: 'auto'
             }}
           >
             <Switch>
@@ -56,7 +62,7 @@ function Admin(props: IProps) {
           <Footer style={{ textAlign: 'center', color: '#ccc' }}>推荐使用谷歌浏览器</Footer>
         </Layout>
       </Layout>
-    </div>
+    </div >
   );
 }
 
