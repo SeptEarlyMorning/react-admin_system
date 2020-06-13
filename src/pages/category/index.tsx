@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Table, Button, message } from 'antd';
+import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
+import { Card, Table, Button, message, Breadcrumb } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
 import { reqCategoryList } from '../../api';
+import AddBox from './addBox';
+import UpdateBox from './updateBox';
+import { IDataSource } from './interface';
 
 interface IProps {
 
@@ -10,15 +13,41 @@ interface IProps {
 
 /* 分类管理页 */
 function Category(props: IProps) {
-  const [dataSource, setDataSource] = useState();
+  const FIRSTCLASS: IDataSource = { _id: '0', name: '一级分类列表' };
+  const [dataSource, setDataSource] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [parentCategotyInfo, setparentCategotyInfo] = useState({ _id: '0', name: '一级分类列表' })
-  let title = '一级分类列表';
+  const [parentCategotyInfo, setparentCategotyInfo] = useState(FIRSTCLASS);
+  const [showBox, setShowBox] = useState(0);
+  const [allCategotys, setAllCategotys] = useState([FIRSTCLASS]);
+
+  const title = (
+    <Breadcrumb>
+      <Breadcrumb.Item>
+        {
+          parentCategotyInfo._id !== FIRSTCLASS._id
+            ? <Button
+              type='link'
+              onClick={() => {
+                showCategory(FIRSTCLASS._id, FIRSTCLASS.name)
+              }}
+            >
+              {FIRSTCLASS.name}
+            </Button>
+            : <Button disabled type='link'>{FIRSTCLASS.name}</Button>
+        }
+      </Breadcrumb.Item>
+      {
+        parentCategotyInfo._id !== FIRSTCLASS._id
+          ? <Breadcrumb.Item>{parentCategotyInfo.name}</Breadcrumb.Item>
+          : null
+      }
+    </Breadcrumb>
+  );
   const extra = (
     <Button
       type='primary'
       icon={<PlusOutlined />}
-      onClick={() => { addCategory() }}
+      onClick={() => { setShowBox(1) }}
     >
       添加
     </Button>
@@ -32,21 +61,25 @@ function Category(props: IProps) {
   }, {
     title: '操作',
     width: 300,
-    render: text => {
-      return <span>
-        <Button style={{ padding: 0, marginRight: '18px' }} type='link'>修改分类</Button>
-        <Button style={{ padding: 0 }} type='link' onClick={() => showSubCategory(text._id, text.name)}>查看子分类</Button>
+    render: text => (
+      <span>
+        <Button style={{ padding: 0, marginRight: '18px' }} type='link'>修改分类名称</Button>
+        {
+          parentCategotyInfo._id === FIRSTCLASS._id
+            ? <Button
+              style={{ padding: 0 }}
+              type='link'
+              onClick={() => showCategory(text._id, text.name)}>
+              查看子分类
+                </Button>
+            : null
+        }
       </span>
-    }
+    )
   },];
 
-  const addCategory = async () => {
-    const categoryList = await reqCategoryList();
-  };
-
-  const showSubCategory = (_id: string, name: string) => {
+  const showCategory = (_id: string, name: string) => {
     setparentCategotyInfo({ _id, name });
-    title = name;
   };
 
   const getCategoryList = async () => {
@@ -55,9 +88,14 @@ function Category(props: IProps) {
     setIsLoading(false);
     if (categoryList.status === 0) {
       setDataSource(categoryList.data);
+      parentCategotyInfo._id === FIRSTCLASS._id && setAllCategotys([FIRSTCLASS, ...categoryList.data]);
     } else {
       message.error('获取分类列表失败');
     }
+  };
+
+  const handleCancel = () => {
+    setShowBox(0);
   };
 
   useEffect(() => {
@@ -84,6 +122,8 @@ function Category(props: IProps) {
         rowKey='_id'
         loading={isLoading}
       />
+      <AddBox parentCategotyInfo={parentCategotyInfo} allCategotys={allCategotys} showBox={showBox} handleCancel={handleCancel} />
+      <UpdateBox showBox={showBox} handleCancel={handleCancel} />
     </Card>
   );
 }
