@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Table, Button, message, Breadcrumb } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/lib/table';
@@ -19,6 +19,7 @@ function Category(props: IProps) {
   const [parentCategotyInfo, setparentCategotyInfo] = useState(FIRSTCLASS);
   const [showBox, setShowBox] = useState(0);
   const [allCategotys, setAllCategotys] = useState([FIRSTCLASS]);
+  const [updateCategoty, setUpdateCategoty] = useState();
 
   const title = (
     <Breadcrumb>
@@ -47,7 +48,7 @@ function Category(props: IProps) {
     <Button
       type='primary'
       icon={<PlusOutlined />}
-      onClick={() => { setShowBox(1) }}
+      onClick={() => { setShowBox(1); }}
     >
       添加
     </Button>
@@ -63,7 +64,16 @@ function Category(props: IProps) {
     width: 300,
     render: text => (
       <span>
-        <Button style={{ padding: 0, marginRight: '18px' }} type='link'>修改分类名称</Button>
+        <Button
+          style={{ padding: 0, marginRight: '18px' }}
+          type='link'
+          onClick={() => {
+            setShowBox(2);
+            setUpdateCategoty({...text});
+          }}
+        >
+          修改分类名称
+        </Button>
         {
           parentCategotyInfo._id === FIRSTCLASS._id
             ? <Button
@@ -122,8 +132,19 @@ function Category(props: IProps) {
         rowKey='_id'
         loading={isLoading}
       />
-      <AddBox parentCategotyInfo={parentCategotyInfo} allCategotys={allCategotys} showBox={showBox} handleCancel={handleCancel} />
-      <UpdateBox showBox={showBox} handleCancel={handleCancel} />
+      <AddBox
+        getCategoryList={getCategoryList}
+        parentCategotyInfo={parentCategotyInfo}
+        allCategotys={allCategotys}
+        showBox={showBox}
+        handleCancel={handleCancel}
+      />
+      <UpdateBox
+        getCategoryList={getCategoryList}
+        updateCategoty={updateCategoty}
+        showBox={showBox}
+        handleCancel={handleCancel}
+      />
     </Card>
   );
 }
