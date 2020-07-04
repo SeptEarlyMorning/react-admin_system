@@ -26,7 +26,6 @@ const ajax: IAjax = (url, data, type = 'GET') => {
     } else {
       promise = axios.post(url, data);
     }
-
     // 2. 如果成功了，调用 resolve(value)
     promise.then(response => {
       resolve(response.data);

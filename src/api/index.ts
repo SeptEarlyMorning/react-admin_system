@@ -26,6 +26,12 @@ export const reqCategoryAdd = (parentId: string, categoryName: string) => ajax('
 // 修改分类名称
 export const reqCategoryRename = (categoryId: string, categoryName: string) => ajax('/manage/category/update', { categoryId, categoryName }, 'POST');
 
+// 查询商品分页列表
+export const reqProductPaginationList = (pageNum: number, pageSize: number) => ajax('/manage/product/list', { pageNum, pageSize }, 'GET');
+
+// 更改商品上架/下架状态
+export const reqChangeProductStatus = (productId: string, status: number) => ajax('/manage/product/updateStatus', { productId, status }, 'POST');
+
 // 查询位置信息
 export const reqLocation = () => {
   return new Promise((resolve, reject) => {

@@ -7,48 +7,48 @@ export interface IMenu {
 
 export const menu: Array<IMenu> = [{
   title: '首页',
-  key: '/home',
+  key: 'home',
   icon: 'icon-shouye',
 }, {
   title: '商品',
-  key: '/products',
+  key: 'products',
   icon: 'icon-shangpin',
   children: [{
     title: '品类管理',
-    key: '/category',
+    key: 'category',
     icon: 'icon-pinleiguanli',
   }, {
     title: '商品管理',
-    key: '/product',
+    key: 'product',
     icon: 'icon-shangpinguanli',
   },]
 }, {
   title: '用户管理',
-  key: '/user',
+  key: 'user',
   icon: 'icon-yonghuguanli',
 }, {
   title: '角色管理',
-  key: '/role',
+  key: 'role',
   icon: 'icon-jueseguanli',
 }, {
   title: '图形图表',
-  key: '/charts',
+  key: 'charts',
   icon: 'icon-tuxingtubiao',
   children: [{
     title: '柱状图',
-    key: '/chart/bar',
+    key: 'bar',
     icon: 'icon-zhuzhuangtu',
   }, {
     title: '折线图',
-    key: '/chart/line',
+    key: 'line',
     icon: 'icon-zhexiantu',
   }, {
     title: '饼图',
-    key: '/chart/pie',
+    key: 'pie',
     icon: 'icon-bingtu',
   },]
 }, {
   title: '订单管理',
-  key: '/order',
+  key: 'order',
   icon: 'icon-dingdanguanli',
 },];

@@ -69,7 +69,7 @@ function Category(props: IProps) {
           type='link'
           onClick={() => {
             setShowBox(2);
-            setUpdateCategoty({...text});
+            setUpdateCategoty({ ...text });
           }}
         >
           修改分类名称

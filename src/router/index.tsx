@@ -27,7 +27,7 @@ const router: Array<Router> = [{
 }, {
   id: 2,
   path: '/product',
-  exact: true,
+  exact: false,
   render(props) {
     return (<Product {...props} />)
   }
@@ -47,21 +47,21 @@ const router: Array<Router> = [{
   }
 }, {
   id: 5,
-  path: '/Chart/bar',
+  path: '/bar',
   exact: true,
   render(props) {
     return (<Bar {...props} />)
   }
 }, {
   id: 6,
-  path: '/Chart/line',
+  path: '/line',
   exact: true,
   render(props) {
     return (<Line {...props} />)
   }
 }, {
   id: 7,
-  path: '/Chart/Pie',
+  path: '/Pie',
   exact: true,
   render(props) {
     return (<Pie {...props} />)

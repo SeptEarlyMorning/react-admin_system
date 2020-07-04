@@ -31,7 +31,7 @@ function Header(props: IProps) {
   const findLocationMenu = (menus: Array<IMenu>) => {
     for (const item of menus) {
       if (title !== '') break;
-      if (item.key === pathName) {
+      if (item.key === pathName.split('/')[1]) {
         title = item.title;
         break;
       }

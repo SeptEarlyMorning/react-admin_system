@@ -18,7 +18,7 @@ interface IProps {
 
 function LeftNav(props: IProps) {
   const location = useLocation();
-  const { pathname } = location;
+  let pathname = location.pathname.split('/')[1];
   let subKey = '';
 
   const getMenuNodes = (menuList: Array<IMenu>) => {
