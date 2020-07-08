@@ -32,6 +32,10 @@ export const reqProductPaginationList = (pageNum: number, pageSize: number) => a
 // 更改商品上架/下架状态
 export const reqChangeProductStatus = (productId: string, status: number) => ajax('/manage/product/updateStatus', { productId, status }, 'POST');
 
+// 根据商品名称/商品描述返回商品分页列表
+export interface IFindParameters { pageNum: number, pageSize: number, productName?: string, productDesc?: string };
+export const reqFindProducts = ({ pageNum, pageSize, productName = '', productDesc = '' }: IFindParameters) => ajax('/manage/product/search', { pageNum, pageSize, productName, productDesc }, 'GET');
+
 // 查询位置信息
 export const reqLocation = () => {
   return new Promise((resolve, reject) => {
